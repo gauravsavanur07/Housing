@@ -23,6 +23,13 @@ public class Housing {
         this.bedrooms = bedrooms;
         this.bathrooms = bathrooms;
     }
+    public Housing(){
+        owner="";
+        type="";
+        county="";
+        bedrooms=0;
+        bathrooms=0;
+    }
 
     public void setOwner(String owner) {
         this.owner = owner;
