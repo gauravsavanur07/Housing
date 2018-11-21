@@ -52,6 +52,34 @@ public Renting(){
     public void setBathrooms(int bathrooms) {
         this.bathrooms = bathrooms;
     }
+
+    public int getMin_rent() {
+        return min_rent;
+    }
+
+    public int getMax_rent() {
+        return max_rent;
+    }
+
+    public String getOwner() {
+        return owner;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public String getCounty() {
+        return county;
+    }
+
+    public int getBedrooms() {
+        return bedrooms;
+    }
+
+    public int getBathrooms() {
+        return bathrooms;
+    }
     
     
     
