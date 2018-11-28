@@ -5,11 +5,13 @@
  */
 package housingapp;
 
+import java.io.Serializable;
+
 /**
  *
  * @author x17114357
  */
-public class Housing {
+public class Housing implements Serializable {
     protected String owner;
     protected String type;
     protected String county;

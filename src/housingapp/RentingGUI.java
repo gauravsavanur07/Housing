@@ -5,6 +5,12 @@
  */
 package housingapp;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
@@ -15,9 +21,9 @@ import javax.swing.JOptionPane;
 public class RentingGUI extends javax.swing.JFrame {
 ArrayList<Renting> rList;
 int rCount;
-    String[] county = { "antriM","armagh","carlow","cavan","clare","cork","derry","donegal","down","dublin","fermanagh","galway","kerry","kildare","kilkenny","laois","leitrim","limerick","longford","louth","mayo","meath","monaghan","offaly","roscommon","sligo","tipperary","tyrone","waterford","westmeath","wexford","wicklow"};
-    String[] type = { "Apartment","House","Studio","Flat" };
-
+    //String[] county = { "antrim","armagh","carlow","cavan","clare","cork","derry","donegal","down","dublin","fermanagh","galway","kerry","kildare","kilkenny","laois","leitrim","limerick","longford","louth","mayo","meath","monaghan","offaly","roscommon","sligo","tipperary","tyrone","waterford","westmeath","wexford","wicklow"};
+  //  String[] type = { "Apartment","House","Studio","Flat" };
+    String owner,county,type;
 
     /**
      * Creates new form RentingGUI
@@ -43,7 +49,7 @@ int rCount;
         jLabel2 = new javax.swing.JLabel();
         Add = new javax.swing.JPanel();
         ownerTF = new javax.swing.JTextField();
-        jLabel1 = new javax.swing.JLabel();
+        OwnerLbl = new javax.swing.JLabel();
         CountyLbl = new javax.swing.JLabel();
         RentComboBox = new javax.swing.JComboBox<>();
         bedroomsTF = new javax.swing.JTextField();
@@ -54,12 +60,13 @@ int rCount;
         Min_RentLbl = new javax.swing.JLabel();
         Max_RentLbl = new javax.swing.JLabel();
         Maximum_RentTF = new javax.swing.JTextField();
-        SearchBtn = new javax.swing.JButton();
+        ViewBtn = new javax.swing.JButton();
         Type = new javax.swing.JLabel();
         TypeComboBox = new javax.swing.JComboBox<>();
         addBtn = new javax.swing.JButton();
         deleteBtn = new javax.swing.JButton();
         BackBtn = new javax.swing.JButton();
+        AffordibilityBtn = new javax.swing.JButton();
 
         jButton1.setText("jButton1");
 
@@ -90,7 +97,7 @@ int rCount;
             }
         });
 
-        jLabel1.setText("Name of Owner");
+        OwnerLbl.setText("Name of Owner");
 
         CountyLbl.setText("County");
 
@@ -110,10 +117,10 @@ int rCount;
 
         Max_RentLbl.setText("Maximum  Rent");
 
-        SearchBtn.setText("Search Property");
-        SearchBtn.addActionListener(new java.awt.event.ActionListener() {
+        ViewBtn.setText("Show Property");
+        ViewBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                SearchBtnActionPerformed(evt);
+                ViewBtnActionPerformed(evt);
             }
         });
 
@@ -133,7 +140,12 @@ int rCount;
             }
         });
 
-        deleteBtn.setText("Delete Property");
+        deleteBtn.setText("Remove Property");
+        deleteBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteBtnActionPerformed(evt);
+            }
+        });
 
         BackBtn.setText("Back");
         BackBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -142,90 +154,115 @@ int rCount;
             }
         });
 
+        AffordibilityBtn.setText("Affordability");
+        AffordibilityBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                AffordibilityBtnActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout AddLayout = new javax.swing.GroupLayout(Add);
         Add.setLayout(AddLayout);
         AddLayout.setHorizontalGroup(
             AddLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(AddLayout.createSequentialGroup()
-                .addGap(18, 18, 18)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, AddLayout.createSequentialGroup()
                 .addGroup(AddLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(AddLayout.createSequentialGroup()
-                        .addComponent(BackBtn)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(AddLayout.createSequentialGroup()
-                        .addGroup(AddLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(Max_RentLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(BedroomsLbl)
-                            .addComponent(BathroomsLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(Min_RentLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(CountyLbl)
-                            .addComponent(Type, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
-                        .addGroup(AddLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(Minimum_RentTF)
-                            .addComponent(bathroomsTF)
-                            .addComponent(bedroomsTF)
-                            .addComponent(ownerTF)
-                            .addComponent(RentComboBox, 0, 104, Short.MAX_VALUE)
-                            .addComponent(Maximum_RentTF)
-                            .addComponent(TypeComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGroup(AddLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(AddLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(AddLayout.createSequentialGroup()
-                                .addGap(26, 26, 26)
-                                .addComponent(addBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, AddLayout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addContainerGap()
+                                .addComponent(Max_RentLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(Maximum_RentTF, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, AddLayout.createSequentialGroup()
                                 .addGroup(AddLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(deleteBtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(SearchBtn, javax.swing.GroupLayout.Alignment.TRAILING))))))
-                .addContainerGap())
+                                    .addGroup(AddLayout.createSequentialGroup()
+                                        .addGap(18, 18, 18)
+                                        .addGroup(AddLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(Min_RentLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addGroup(AddLayout.createSequentialGroup()
+                                                .addGap(12, 12, 12)
+                                                .addGroup(AddLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addComponent(Type, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addComponent(CountyLbl)
+                                                    .addComponent(BedroomsLbl)
+                                                    .addComponent(BathroomsLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 36, Short.MAX_VALUE))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, AddLayout.createSequentialGroup()
+                                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(OwnerLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                .addGroup(AddLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(Minimum_RentTF)
+                                    .addComponent(bathroomsTF)
+                                    .addComponent(bedroomsTF)
+                                    .addComponent(ownerTF)
+                                    .addComponent(RentComboBox, 0, 104, Short.MAX_VALUE)
+                                    .addComponent(TypeComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addGap(18, 18, 18))
+                    .addGroup(AddLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(BackBtn)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addGroup(AddLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(deleteBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(addBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(AffordibilityBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(ViewBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(18, 18, 18))
         );
         AddLayout.setVerticalGroup(
             AddLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(AddLayout.createSequentialGroup()
                 .addGroup(AddLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(AddLayout.createSequentialGroup()
-                        .addGap(21, 21, 21)
+                        .addGap(20, 20, 20)
                         .addGroup(AddLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(ownerTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel1))
-                        .addGap(17, 17, 17))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, AddLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(addBtn)))
-                .addGroup(AddLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(AddLayout.createSequentialGroup()
+                            .addComponent(OwnerLbl)
+                            .addComponent(ownerTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
                         .addGroup(AddLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(CountyLbl)
                             .addComponent(RentComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(7, 7, 7)
+                        .addGap(18, 18, 18)
+                        .addComponent(Type)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(AddLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(Type)
-                            .addComponent(TypeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(BedroomsLbl)
+                            .addComponent(bedroomsTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(AddLayout.createSequentialGroup()
-                        .addGap(9, 9, 9)
-                        .addComponent(deleteBtn)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(AddLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(BedroomsLbl)
-                    .addComponent(bedroomsTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(SearchBtn))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(AddLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(bathroomsTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(BathroomsLbl))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(AddLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(Minimum_RentTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(Min_RentLbl))
-                .addGap(18, 18, 18)
-                .addGroup(AddLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(Maximum_RentTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(Max_RentLbl))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
-                .addComponent(BackBtn)
-                .addGap(27, 27, 27))
+                        .addGap(33, 33, 33)
+                        .addComponent(AffordibilityBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(AddLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(TypeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(addBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGroup(AddLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(AddLayout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addComponent(BathroomsLbl))
+                    .addGroup(AddLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(bathroomsTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(AddLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(Minimum_RentTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(Min_RentLbl)))
+                    .addGroup(AddLayout.createSequentialGroup()
+                        .addGap(19, 19, 19)
+                        .addComponent(deleteBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGroup(AddLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(AddLayout.createSequentialGroup()
+                        .addGap(16, 16, 16)
+                        .addGroup(AddLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(Maximum_RentTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(ViewBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(AddLayout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(Max_RentLbl)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(BackBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(12, 12, 12))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -256,7 +293,7 @@ int rCount;
         // TODO add your handling code here:
     }//GEN-LAST:event_RentComboBoxActionPerformed
 
-    private void SearchBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SearchBtnActionPerformed
+    private void ViewBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ViewBtnActionPerformed
 String owner,county,bedrooms,bathrooms,type;
 int min_rent,max_rent;
 Renting r;
@@ -269,26 +306,58 @@ county = RentComboBox.getSelectedItem().toString();
 type=TypeComboBox.getSelectedItem().toString();
 
 rCount=rList.size();
+if(owner.equals("")||type.equals("")){
+     JOptionPane.showMessageDialog(null, "You did not enter the owner name or county");
+
+}
+else {
 for(int i=0;i<rCount;i++){
     r = rList.get(i);
-    
-    Renting rent = (Renting)r;
-    JOptionPane.showMessageDialog(null, "owner "+rent.getOwner()+" bedrooms "+rent.getBedrooms()+" bathrooms "+rent.getBathrooms()+" county "+rent.getCounty()+" type "+rent.getType());
+   Renting rent = (Renting)r;
+    JOptionPane.showMessageDialog(null, "owner "+rent.getOwner()+" bedrooms "+rent.getBedrooms()+" bathrooms "+rent.getBathrooms()+" county "+rent.getCounty()+" type "+rent.getType()+" maximum rent "+rent.getMax_rent()+" minimum rent "+rent.getMin_rent());
+
+
+readFromFile();
+}
+
 }
 
 
 
 
 
-
-
-
-
-
-
         // TODO add your handling code here:
-    }//GEN-LAST:event_SearchBtnActionPerformed
-
+    }//GEN-LAST:event_ViewBtnActionPerformed
+ public void writeToFile(){
+String owner,county,bedrooms,bathrooms,type;
+int min_rent,max_rent;
+    try {
+        File f =new File("renting.dat");
+        FileOutputStream fStream =new FileOutputStream(f);
+        ObjectOutputStream oStream=new ObjectOutputStream(fStream);
+        oStream.writeObject(rList);
+        oStream.close();
+    }
+    catch(IOException e){
+   System.out.println(e);
+    } 
+ }
+     public void readFromFile(){
+        try{
+            File f=new File("renting.dat");
+            FileInputStream fStream= new FileInputStream(f);
+            ObjectInputStream oStream = new ObjectInputStream(fStream);
+           rList = (ArrayList<Renting>) oStream.readObject();
+           oStream.close();
+            
+        }
+        catch(IOException|ClassNotFoundException e ){
+                System.out.println(e);
+        }
+        
+    
+        }
+ 
     private void TypeComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TypeComboBoxActionPerformed
           String selectedValue = TypeComboBox.getSelectedItem().toString();
 
@@ -312,7 +381,7 @@ r = new Renting( min_rent, max_rent, owner,type, county,  bedrooms,  bathrooms);
 
 rList.add(r);
 
-
+writeToFile();
         // TODO add your handling code here:
     }//GEN-LAST:event_addBtnActionPerformed
 
@@ -322,6 +391,48 @@ new HousingGUI().setVisible(true);
 
         // TODO add your handling code here:
     }//GEN-LAST:event_BackBtnActionPerformed
+
+    private void deleteBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteBtnActionPerformed
+      owner=ownerTF.getText();
+      county=RentComboBox.getSelectedItem().toString();
+      type=TypeComboBox.getSelectedItem().toString();
+       Renting r;
+       rCount=rList.size();
+       
+       if(owner.equals("")||county.equals("")||type.equals("")){
+        JOptionPane.showMessageDialog(null, "Enter the owner and type of housing to delete  ");   
+       }
+       else {
+           for(int i=0;i<rCount;i++){
+              r=rList.get(i);
+              
+              if(owner.equals(r.getOwner())||county.equals(r.getCounty())){
+                  rList.remove(i);
+                  
+              }
+              
+              JOptionPane.showMessageDialog(null,"The Owner and the apartment has been removed");
+               
+               writeToFile();
+           }
+       }
+           
+         
+        // TODO add your handling code here:
+    }//GEN-LAST:event_deleteBtnActionPerformed
+
+    private void AffordibilityBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AffordibilityBtnActionPerformed
+        double rent,salary;
+        Renting r = new Renting();
+
+        salary= Double.parseDouble(JOptionPane.showInputDialog(null, "Enter your Annual Salary"));
+        r.setSalary(salary);
+        
+        r.compute();
+        
+        JOptionPane.showMessageDialog(null, "The maximum affordable rent you can pay per month is = "+r.getRent());
+        // TODO add your handling code here:
+    }//GEN-LAST:event_AffordibilityBtnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -360,6 +471,7 @@ new HousingGUI().setVisible(true);
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel Add;
+    private javax.swing.JButton AffordibilityBtn;
     private javax.swing.JButton BackBtn;
     private javax.swing.JLabel BathroomsLbl;
     private javax.swing.JLabel BedroomsLbl;
@@ -368,16 +480,16 @@ new HousingGUI().setVisible(true);
     private javax.swing.JTextField Maximum_RentTF;
     private javax.swing.JLabel Min_RentLbl;
     private javax.swing.JTextField Minimum_RentTF;
+    private javax.swing.JLabel OwnerLbl;
     private javax.swing.JComboBox<String> RentComboBox;
-    private javax.swing.JButton SearchBtn;
     private javax.swing.JLabel Type;
     private javax.swing.JComboBox<String> TypeComboBox;
+    private javax.swing.JButton ViewBtn;
     private javax.swing.JButton addBtn;
     private javax.swing.JTextField bathroomsTF;
     private javax.swing.JTextField bedroomsTF;
     private javax.swing.JButton deleteBtn;
     private javax.swing.JButton jButton1;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField ownerTF;
