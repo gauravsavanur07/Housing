@@ -31,9 +31,9 @@ public class HousingGUI extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        buyBtn = new javax.swing.JButton();
+        rentBtn = new javax.swing.JButton();
+        commBtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -65,21 +65,24 @@ public class HousingGUI extends javax.swing.JFrame {
 
         jPanel3.setBackground(new java.awt.Color(98, 0, 238));
 
-        jButton1.setText("BUY");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        buyBtn.setBackground(new java.awt.Color(255, 2, 102));
+        buyBtn.setText("BUY");
+        buyBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                buyBtnActionPerformed(evt);
             }
         });
 
-        jButton2.setText("RENT");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        rentBtn.setBackground(new java.awt.Color(255, 2, 102));
+        rentBtn.setText("RENT");
+        rentBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                rentBtnActionPerformed(evt);
             }
         });
 
-        jButton3.setText("COMMERCIAL");
+        commBtn.setBackground(new java.awt.Color(255, 2, 102));
+        commBtn.setText("COMMERCIAL");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -88,20 +91,20 @@ public class HousingGUI extends javax.swing.JFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(61, 61, 61)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(commBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(rentBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(buyBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(60, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(42, 42, 42)
-                .addComponent(jButton1)
+                .addComponent(buyBtn)
                 .addGap(18, 18, 18)
-                .addComponent(jButton2)
+                .addComponent(rentBtn)
                 .addGap(18, 18, 18)
-                .addComponent(jButton3)
+                .addComponent(commBtn)
                 .addContainerGap(45, Short.MAX_VALUE))
         );
 
@@ -138,16 +141,15 @@ public class HousingGUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void buyBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buyBtnActionPerformed
+        this.dispose();
+        new BuyingGUI().setVisible(true);
+    }//GEN-LAST:event_buyBtnActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-                new RentingGUI().setVisible(true);
-               
-
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2ActionPerformed
+    private void rentBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rentBtnActionPerformed
+        this.dispose();
+        new RentingGUI().setVisible(true);
+    }//GEN-LAST:event_rentBtnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -185,12 +187,12 @@ public class HousingGUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
+    private javax.swing.JButton buyBtn;
+    private javax.swing.JButton commBtn;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JButton rentBtn;
     // End of variables declaration//GEN-END:variables
 }

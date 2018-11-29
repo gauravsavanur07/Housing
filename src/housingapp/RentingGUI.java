@@ -32,6 +32,7 @@ int rCount;
         initComponents();
         rList = new ArrayList<>();
         rCount=0;
+        
    
     }
 
@@ -403,17 +404,24 @@ new HousingGUI().setVisible(true);
         JOptionPane.showMessageDialog(null, "Enter the owner and type of housing to delete  ");   
        }
        else {
+      owner=ownerTF.getText();
+      county=RentComboBox.getSelectedItem().toString();
+      type=TypeComboBox.getSelectedItem().toString();
+
            for(int i=0;i<rCount;i++){
               r=rList.get(i);
+           if(r.getOwner().equals(owner)&&r.getCounty().equals(county)){
+               rList.remove(i);
+               rCount = rCount-1;  
               
-              if(owner.equals(r.getOwner())||county.equals(r.getCounty())){
-                  rList.remove(i);
-                  
-              }
               
-              JOptionPane.showMessageDialog(null,"The Owner and the apartment has been removed");
-               
+              JOptionPane.showMessageDialog(null,"The Owner and the "+type+" type has been removed");
+              
                writeToFile();
+              }
+              else if(i==rCount-1){
+                  JOptionPane.showMessageDialog(null, "Enter a value");
+              }
            }
        }
            
@@ -430,7 +438,7 @@ new HousingGUI().setVisible(true);
         
         r.compute();
         
-        JOptionPane.showMessageDialog(null, "The maximum affordable rent you can pay per month is = "+r.getRent());
+        JOptionPane.showMessageDialog(null, "The maximum affordable rent you can pay per month is = "+r.getRent()+" Euros");
         // TODO add your handling code here:
     }//GEN-LAST:event_AffordibilityBtnActionPerformed
 
